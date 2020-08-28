@@ -1,0 +1,11 @@
+name: aebs-db
+
+channels:
+    - conda-forge
+
+dependencies:
+    - python=3.8.5
+    - pip=20.2.2
+    - pip:
+        - ged4py==0.1.11
+        - redis==3.5.3
