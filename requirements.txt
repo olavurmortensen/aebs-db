@@ -1,0 +1,3 @@
+git+https://github.com/olavurmortensen/pedgraph.git@master#egg=pedgraph
+jupyterlab==2.2.7
+ipywidgets=7.5.1
