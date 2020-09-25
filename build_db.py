@@ -38,6 +38,23 @@ with driver.session() as session:
 
     logging.info('%d out of %d rows in census CSV matched a record.' % (n_matches, n_rows))
 
+    # Create an index for property "census" for faster look-up.
+
+    # Get a list of all database indexes.
+    result = session.run('CALL db.indexes')
+    indexes = result.values()
+
+    # If the list contains the 'index_census' index, we will not create it.
+    index_names = [index[1] for index in indexes]
+    if 'index_census' not in index_names:
+        logging.info('Creating an index "index_census" on individual IDs.')
+        # The 'index_ind' index does not exist, so we will create it.
+        # Create an index on "ind" and constain it to be unique.
+        result = session.run('CREATE INDEX index_census FOR (n:Person) ON (n.census)')
+    else:
+        logging.info('Index "index_census" already exists, will not create.')
+
+
     result = session.run("USING PERIODIC COMMIT 1000                        "
                         "LOAD CSV WITH HEADERS FROM $csv AS line      "
                         "MATCH (person:Person {ind: line.rin})             "
