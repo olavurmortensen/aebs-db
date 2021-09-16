@@ -16,6 +16,8 @@ spec:
           value: "none"
         - name: NEO4JLABS_PLUGINS
           value: '["apoc"]'
+        - name: NEO4J_dbms_allow__upgrade
+          value: 'true'
       ports:
         - containerPort: 7474
       ports:
