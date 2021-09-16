@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aebs-db-master
+  namespace: olavur
+  labels:
+    app: aebs-db
+spec:
+  containers:
+    - name: master
+      image: neo4j
+      env:
+        - name: MASTER
+          value: "true"
+        - name: NEO4J_AUTH
+          value: "none"
+        - name: NEO4JLABS_PLUGINS
+          value: '["apoc"]'
+      ports:
+        - containerPort: 7474
+      ports:
+        - containerPort: 7687
+      # Mount the volume defined further down in this file.
+      volumeMounts:
+      - mountPath: /data
+        name: home-olavur
+        # Mount the "aebs-db-dump" folder in the "home-olavur" volume referenced below.
+        subPath: aebs-db-dump
+        # Mount the data as read/write.
+        readOnly: false
+      securityContext:
+        # Run as root, so we have the right to write data.
+        runAsUser: 0
+  # Define the volume, attaching to an existing persistent volume on the cluster.
+  volumes:
+  - name: home-olavur
+    persistentVolumeClaim:
+      claimName: home-olavur
