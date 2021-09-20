@@ -17,7 +17,21 @@ pip install -r requirements.txt
 
 ## Neo4j DB
 
-Setup the Neo4j database, for example as done [here](https://github.com/olavurmortensen/pedgraph/#run-neo4j-with-docker).
+Deploy the neo4j database container:
+
+```bash
+rancher kubectl create -f db_setup/aebs-db-master.yaml
+```
+
+Then deploy the service, to expose the HTTP and Bolt ports to an IP:
+
+```bash
+rancher kubectl create -f db_setup/aebs-db-service.yaml
+```
+
+Now the database should be available through bolt://aebs-db:7687.
+
+Alternatively, setup the Neo4j database as done [here](https://github.com/olavurmortensen/pedgraph/#run-neo4j-with-docker).
 
 ## Setup DB
 
